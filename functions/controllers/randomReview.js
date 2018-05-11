@@ -6,7 +6,7 @@ const randomReview = (request, response) => {
   return getLastReviewId()
     .then(lastId => {
       const randomId = Math.floor(Math.random() * lastId) + 1
-
+      
       return getReviewById(randomId)
     })
     .then(review => {
