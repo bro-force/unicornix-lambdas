@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+- "7"
+script:
+- echo "Deploy!!"
+install:
+- npm install -g firebase-tools
+after_success:
+- cd functions
+- firebase deploy -project unicornix-54c1b —token $FIREBASE_TOKEN.
