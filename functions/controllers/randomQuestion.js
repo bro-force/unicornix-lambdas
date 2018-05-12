@@ -2,16 +2,21 @@ require('dotenv').load();
 const functions = require('firebase-functions')
 const getLastReviewId = require('../database-controllers/lastReview')
 const getReviewById = require('../database-controllers/getReviewById')
-const shuffle = require('shuffle-array');
+const shuffle = require('shuffle-array')
 
+const cors = require('cors')({
+  origin: true
+})
 
-const CryptoJS = require("crypto-js");
+const CryptoJS = require("crypto-js")
 const Base64 = require('crypto-js/enc-base64')
 
 const quiz = (request, response) => {
 
   return generateQuiz(request.query.amount).then(quiz => {
-    return response.send(quiz)
+    return cors(request, response, () => {
+      return response.send(quiz)
+    })
   })
 }
 
@@ -23,7 +28,7 @@ const generateQuiz = (amount = 10) => {
     return generateRandomQuestion();
   })
 
-  return Promise.all(arrPromises).then(quiz => quiz);
+  return Promise.all(arrPromises).then(quiz => quiz)
 
 }
 
@@ -37,15 +42,15 @@ const generateRandomQuestion = () => {
     }).then((alternatives) => {
       alternatives.push(answer.company.toUpperCase())
       shuffle(alternatives)
-      return new Promise((resolve, reject) => {       
+      return new Promise((resolve, reject) => {
         resolve({
-          comment:  answer.comment,
+          comment: answer.comment,
           answer: encryptAnswer(answer.company.toUpperCase()),
           alternatives
         })
       })
     }).catch(err => console.log(err))
-} 
+}
 const encryptAnswer = (answer) => {
   const encryptKey = process.env.ENCRYPTION_KEY || functions.config().encryption.key
   return Base64.stringify(CryptoJS.HmacSHA1(answer, encryptKey))
@@ -77,12 +82,11 @@ const generateAlternatives = (answer, result = []) => {
 
       if (newResult.length === 3) return newResult
 
-      newResult.push(reviewAltCompany);
+      newResult.push(reviewAltCompany)
 
       return generateAlternatives(answer, newResult)
 
     }).catch(err => console.log(err))
 }
-
 
 module.exports = quiz
