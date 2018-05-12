@@ -1,7 +1,7 @@
 const functions = require('firebase-functions')
 
 const randomReview = require('./controllers/randomReview')
-const randomQuestion = require('./controllers/randomQuestion')
+const quiz = require('./controllers/quiz')
 
 exports.randomReview = functions.https.onRequest(randomReview)
-exports.randomQuestion = functions.https.onRequest(randomQuestion)
+exports.quiz = functions.https.onRequest(quiz)
