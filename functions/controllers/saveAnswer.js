@@ -30,6 +30,11 @@ const saveAnswer = (request, response) => {
       .then(() => {
         return cors(request, response, () => response.status(200))
       })
+      .catch(error => {
+        console.error(error)
+
+        return cors(request, response, () => response.status(500).send(error))
+      })
   }
 }
 
