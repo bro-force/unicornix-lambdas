@@ -11,11 +11,13 @@ const quiz = (request, response) => {
     .then(quiz => {
       const quizId = db.ref('userQuizzes').push().key
       db.ref(`userQuizzes/${quizId}/questions`).set(quiz)
+      db.ref(`userQuizzes/${quizId}/nickname`).set(request.query.nickname)
 
       return {
         id: quizId,
         questions: quiz,
-        nickname: request.query.nickname
+        nickname: request.query.nickname,
+        createdAt: Date.now()
       }
     })
     .then(quiz => cors(request, response, () => response.send(quiz)))
