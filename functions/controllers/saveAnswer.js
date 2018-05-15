@@ -10,7 +10,7 @@ const saveAnswer = (request, response) => {
   const hasSelectedAnswer = typeof data.selectedAnswer === 'string'
 
   if (request.method === 'OPTIONS') {
-    return cors(request, response, () => response.status(200))
+    return cors(request, response, () => response.status(200).send())
   } else if (request.method !== 'POST') {
     return cors(request, response, () => response.status(405).send('Method not allowed'))
   } else if (!hasQuizId || !hasQuestionIndex || !hasSelectedAnswer) {
@@ -28,7 +28,7 @@ const saveAnswer = (request, response) => {
       })
       .then(question => questionRef.update(question))
       .then(() => {
-        return cors(request, response, () => response.status(200))
+        return cors(request, response, () => response.status(200).send())
       })
       .catch(error => {
         console.error(error)
