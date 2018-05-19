@@ -1,4 +1,5 @@
 const functions = require('firebase-functions')
+const cors = require('../helpers/cors')
 const getLastReviewId = require('../database-controllers/lastReview')
 const getReviewById = require('../database-controllers/getReviewById')
 

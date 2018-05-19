@@ -1,4 +1,4 @@
-const cors = require('cors')({ origin: true })
+const cors = require('../helpers/cors')
 
 const db = require('../database')
 const encryptAnswer = require('../helpers/encryptAnswer')

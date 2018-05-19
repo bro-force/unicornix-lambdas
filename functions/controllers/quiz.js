@@ -1,6 +1,6 @@
 require('dotenv').load();
 const functions = require('firebase-functions')
-const cors = require('cors')({ origin: true })
+const cors = require('../helpers/cors')
 
 const db = require('../database')
 
@@ -10,15 +10,17 @@ const quiz = (request, response) => {
   return generateQuiz(request.query.amount)
     .then(quiz => {
       const quizId = db.ref('userQuizzes').push().key
-      db.ref(`userQuizzes/${quizId}/questions`).set(quiz)
-      db.ref(`userQuizzes/${quizId}/nickname`).set(request.query.nickname)
 
-      return {
+      const quizData = {
         id: quizId,
         questions: quiz,
         nickname: request.query.nickname,
         createdAt: Date.now()
       }
+
+      db.ref(`userQuizzes/${quizId}`).set(quizData)
+
+      return quizData
     })
     .then(quiz => cors(request, response, () => response.send(quiz)))
 }
